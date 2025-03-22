@@ -2,7 +2,9 @@ package com.projetoSpring.demo.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.projetoSpring.demo.entities.enums.OrderStatus;
@@ -13,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,6 +36,9 @@ public class Order implements Serializable{
 	private User client;
 	
 	private Integer orderStatus;
+	
+	@OneToMany(mappedBy = "id.order")
+	private Set<OrderItem> items = new HashSet<>();
 	
 	public Order() {
 		
@@ -63,6 +69,10 @@ public class Order implements Serializable{
 
 	public User getClient() {
 		return client;
+	}
+	
+	public void setItems(Set<OrderItem> items) {
+		this.items = items;
 	}
 
 	public OrderStatus getOrderStatus() {
@@ -95,6 +105,12 @@ public class Order implements Serializable{
 		Order other = (Order) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+
+	
 	
 	
 }
